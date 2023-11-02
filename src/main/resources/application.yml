@@ -1,0 +1,57 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  docker:
+    compose:
+      lifecycle-management: start_only
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+  sql:
+    init:
+      mode: always
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/test'
+    username: test
+    password: test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    root: INFO
+    com.nhn: DEBUG
+
+    org.springframework: INFO
+    org.springframework.web.reactive.function.server.support.RouterFunctionMapping: TRACE
+
+    db: INFO
+    web: INFO
+    server: INFO
+    beans: INFO
+
+  group:
+    db:
+#      - org.springframework.data.repository.config.RepositoryConfigurationDelegate
+      - io.asyncer.r2dbc.mysql.QUERY
+      - org.springframework.data
+    web:
+      - org.springframework.web.reactive.handler.SimpleUrlHandlerMapping
+      - org.springframework.web.reactive.function.server.support.RouterFunctionMapping
+    server:
+      - reactor.netty
+      - io.netty
+    beans:
+      - org.springframework.beans.factory.support.DefaultListableBeanFactory
+      - org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger
+
+  pattern:
+    console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){yellow} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr([%15.15t]){red} %clr(%logger){cyan} \n%m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
