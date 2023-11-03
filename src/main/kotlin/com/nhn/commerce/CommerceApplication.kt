@@ -18,6 +18,7 @@ import org.springframework.web.reactive.function.server.coRouter
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 @SpringBootApplication
 class CommerceApplication
@@ -36,9 +37,7 @@ fun main(args: Array<String>) {
                             val members = fetchAll(dslContext)
 
                             val token =
-                                "gAAAAABlQydnbNX1t7kajC6q3WuGa9NFqfU9HSY-jt-4Don_cL0KjrYw_M3KMWjP2LYKTWj8ba0vED2gPcoLeg0giAYotMoEztiYQeOovHDf3CcBJlrgnPx19tL_tOZ31y-jGslYzYZDQUhK4WQMRig7SuvLqKRPAs0sfvRR_mxBl88W2wQVwng"
-                            val uri =
-                                "https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_69db659103894b00aa9f8b28aa62fe8e/paycomall/dummy.csv"
+                                "gAAAAABlRFhaqvBtXXgazpDbPs87makk0XKMZS3Fb96KlJyZXus0xyslpEj9qgpF-sFMPc0AVtBNV5LBiA_iI2oov0BHaH4_nW-c1ij0WbJif7EgQx2lOpJfqeZcFuCC_bBKvADEHTvUW-n4hrDNgHp2KQp-aaq6CJgjmoAqgAAcr6UIcOrCIYo"
 
                             val response: Mono<String> =
                                 WebClient.create("https://kr1-api-object-storage.nhncloudservice.com")
@@ -59,27 +58,24 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun fetchAll(dslContext: DSLContext): Flux<String> = Flux.from(
-    dslContext.select(MEMBER).from(MEMBER),
-).doFirst {
-    val runtime = Runtime.getRuntime()
-    val total = runtime.totalMemory()
-    val max = runtime.maxMemory()
-    val free = runtime.freeMemory()
+private fun fetchAll(dslContext: DSLContext): Flux<String> {
+    val now = LocalDateTime.now()
+    val headers = "회원번호,이름,타입,가입일"
 
-    println("total : $total max : $max free : $free")
-    println(LocalDateTime.now())
+    return Flux.from(
+        dslContext.select(MEMBER).from(MEMBER),
+    )
+        .map {
+            val member = it.into(Member::class.java)
+            "${member.memberNo},${member.name},${member.type},${member.createdAt}\n"
+        }
+        .doOnNext {
+//            println(it)
+        }
+        .doOnComplete {
+            println(now.until(LocalDateTime.now(), ChronoUnit.SECONDS))
+        }
 }
-//    .delayElements(Duration.ofMillis(100))
-    .map {
-        val member = it.into(Member::class.java)
-
-        "${member.memberNo},${member.name},${member.type},${member.createdAt}\n"
-    }
-    .doOnNext {
-        println(it)
-    }
-    .doOnComplete { println(LocalDateTime.now()) }
 
 data class Member(
     @Id var memberNo: Int? = null,

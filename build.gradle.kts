@@ -8,10 +8,10 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     id("nu.studer.jooq") version "8.2.1"
 
-    id("io.gitlab.arturbosch.detekt") version "1.23.1"
+//    id("io.gitlab.arturbosch.detekt") version "1.23.1"
 
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.spring") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.spring") version "1.9.20"
 }
 
 group = "com.nhn"
@@ -19,7 +19,7 @@ version = "0.0.1-SNAPSHOT"
 val jooqVersion = "3.18.6"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -65,7 +65,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 

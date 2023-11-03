@@ -104,6 +104,34 @@ VALUES (1, 'explicabo', 'READY', '1997-06-01 10:17:46'),
 
 COMMIT;
 
+
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
+insert into MEMBER(name, type, created_at)
+select name, type, created_at from MEMBER;
 insert into MEMBER(name, type, created_at)
 select name, type, created_at from MEMBER;
 
