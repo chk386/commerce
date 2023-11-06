@@ -65,8 +65,13 @@ private fun fetchAll(dslContext: DSLContext): Flux<String> {
     return Flux.from(
         dslContext.select(MEMBER).from(MEMBER),
     )
+        .index()
+        .groupBy {
+            // 1부터 100백만건 까지 1
+            // 100백1부터 1999999까지 2
+        }
         .map {
-            val member = it.into(Member::class.java)
+            val member = it.t2.into(Member::class.java)
             "${member.memberNo},${member.name},${member.type},${member.createdAt}\n"
         }
         .doOnNext {

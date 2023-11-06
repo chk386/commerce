@@ -1,0 +1,35 @@
+### get token
+POST https://api-identity-infrastructure.nhncloudservice.com/v2.0/tokens
+Content-Type: application/json
+
+{
+  "auth": {
+    "tenantId": "69db659103894b00aa9f8b28aa62fe8e",
+    "passwordCredentials": {
+      "username": "haekyu.cho@nhn.com",
+      "password": "nhn!@#123"
+    }
+  }
+}
+
+<> 2023-11-03T111802.200.json
+<> 2023-11-02T133655.200.json
+<> 2023-11-01T165253.200.json
+### gAAAAABlQgJhmvCX7TRmhJk1s0Pu7ZJGkP7XduaDwWx4lSrEY1Eb6eqLN-WqdUr0txbapNebV__MOZ4a-K5wEHUAwfQa-RfMrcf_3KPzXSudSAeAmfVITY-Pr5kqEyRGHwYFr0botasZVEL_RZ_zddYg6melzEahObk_mHS08tE2IqiftyAMUZw
+
+<> 2023-11-01T164641.200.json
+
+
+### upload
+PUT https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_69db659103894b00aa9f8b28aa62fe8e/paycomall/dummy.txt
+X-Auth-Token: gAAAAABlQgJhmvCX7TRmhJk1s0Pu7ZJGkP7XduaDwWx4lSrEY1Eb6eqLN-WqdUr0txbapNebV__MOZ4a-K5wEHUAwfQa-RfMrcf_3KPzXSudSAeAmfVITY-Pr5kqEyRGHwYFr0botasZVEL_RZ_zddYg6melzEahObk_mHS08tE2IqiftyAMUZw
+
+--WebAppBoundary
+
+< dummy.txt
+--WebAppBoundary--
+
+<> 2023-11-01T165323.404.html
+<> 2023-11-01T165215.400.txt
+<> 2023-11-01T160902.200.json
+<> 2023-11-01T160759.401.json
