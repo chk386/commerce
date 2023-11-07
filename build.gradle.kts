@@ -139,6 +139,7 @@ jooq {
 
                     generate.apply {
                         isPojosAsKotlinDataClasses = true
+                        isImmutablePojos = true
                     }
 
                     target.apply {

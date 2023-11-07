@@ -1,5 +1,6 @@
 package com.nhn.commerce
 
+import com.nhn.commerce.tables.pojos.Member
 import com.nhn.commerce.tables.references.MEMBER
 import io.r2dbc.spi.ConnectionFactory
 import kotlinx.coroutines.reactive.asFlow
@@ -9,7 +10,6 @@ import org.jooq.impl.DSL
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.support.beans
-import org.springframework.data.annotation.Id
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -18,7 +18,6 @@ import org.springframework.web.reactive.function.server.coRouter
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 @SpringBootApplication
 class CommerceApplication
@@ -60,31 +59,30 @@ fun main(args: Array<String>) {
 
 private fun fetchAll(dslContext: DSLContext): Flux<String> {
     val now = LocalDateTime.now()
-    val headers = "회원번호,이름,타입,가입일"
+    val headers = Flux.just("회원번호,이름,타입,가입일")
 
-    return Flux.from(
+    val body = Flux.from(
         dslContext.select(MEMBER).from(MEMBER),
-    )
-        .index()
-        .groupBy {
-            // 1부터 100백만건 까지 1
-            // 100백1부터 1999999까지 2
+    ).map {
+        with(it.into(Member::class.java)) {
+            "$memberNo,$name,$type,${createdAt}\n"
         }
-        .map {
-            val member = it.t2.into(Member::class.java)
-            "${member.memberNo},${member.name},${member.type},${member.createdAt}\n"
-        }
-        .doOnNext {
-//            println(it)
-        }
-        .doOnComplete {
-            println(now.until(LocalDateTime.now(), ChronoUnit.SECONDS))
-        }
+    }
+    return headers.mergeWith(body)
 }
 
-data class Member(
-    @Id var memberNo: Int? = null,
-    var name: String? = null,
-    var type: String? = null,
-    var createdAt: LocalDateTime = LocalDateTime.now(),
-)
+//        .index()
+//        .groupBy {
+//            // 1부터 100백만건 까지 1
+//            // 100백1부터 1999999까지 2
+//        }
+//        .map {
+//            val member = it.t2.into(Member::class.java)
+//
+//        }
+//        .doOnNext {
+// //            println(it)
+//        }
+//        .doOnComplete {
+//            println(now.until(LocalDateTime.now(), ChronoUnit.SECONDS))
+//        }
